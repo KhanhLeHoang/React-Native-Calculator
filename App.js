@@ -1,20 +1,36 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Text, TextInput, View } from 'react-native';
 
-export default function App() {
+const Calculator = () => {
+  const [text, setText] = useState('');
+  const [result, setResult] = useState('');
+  const calc = (text) => {
+    try {
+      return eval(text);
+    }
+    catch (e) {
+      return "Syntax Error";
+    }
+  }
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View style={{padding: 10}}>
+      <TextInput
+        style={{height: 40}}
+        placeholder="Type here to calculate!"
+        onChangeText={newText => setText(newText)}
+        defaultValue={text}
+        onKeyPress={ (event) => {
+          if(event.nativeEvent.key == "Enter"){
+            setResult(calc(text))
+          }
+    }}
+      />
+      <Text style={{padding: 10, fontSize: 42}}>
+        { result
+        }
+      </Text>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default Calculator;
