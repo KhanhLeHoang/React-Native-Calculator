@@ -1,34 +1,41 @@
 import React, { useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
+import History from './History';
 
 const Calculator = () => {
   const [text, setText] = useState('');
   const [result, setResult] = useState('');
+  const [his, setHis] = useState([]);
   const calc = (text) => {
     try {
-      return eval(text);
+      const res = eval(text);
+      setHis([...his, text])
+      return res;
     }
     catch (e) {
       return "Syntax Error";
     }
   }
   return (
-    <View style={{padding: 10}}>
+    <View style={{ padding: 10, display: 'flex' }}>
       <TextInput
-        style={{height: 40}}
+        style={{ width: '500px', height: 40, fontSize: 30, }}
         placeholder="Type here to calculate!"
         onChangeText={newText => setText(newText)}
         defaultValue={text}
-        onKeyPress={ (event) => {
-          if(event.nativeEvent.key == "Enter"){
+        onKeyPress={(event) => {
+          if (event.nativeEvent.key == "Enter") {
             setResult(calc(text))
           }
-    }}
+        }}
       />
-      <Text style={{padding: 10, fontSize: 42}}>
-        { result
-        }
+      <Text style={{}}>
+        {result}
       </Text>
+      <History
+        history={his}
+        search={text}
+      />
     </View>
   );
 }
