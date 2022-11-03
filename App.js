@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet,TextInput, View, Text, TouchableOpacity, Button } from "react-native";
+import { StyleSheet, TextInput, View, Text, TouchableOpacity, Button } from "react-native";
 
 export default function App() {
   const [resultText, setResultText] = useState("");
@@ -13,8 +13,8 @@ export default function App() {
       return "Syntax Error";
     }
   }
-  const Replace = (text) =>{
-    while(text.includes("++")||text.includes("+-")||text.includes("-+")||text.includes("--"))
+  const Replace = (text) => {
+    while (text.includes("++") || text.includes("+-") || text.includes("-+") || text.includes("--"))
       text = text.replace("++", "+ +").replace("+-", "+ -").replace("-+", "- +").replace("--", "- -");
     return text;
   }
@@ -47,8 +47,13 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.result}>
-        <Text style={styles.resultText}>{calcText}</Text>
+      <View style={styles.resultContainer}>
+        <View style={styles.history}>
+          <Text style={styles.historyText}>{calcText}</Text>
+        </View>
+        <View style={styles.result}>
+          <Text style={styles.resultText}>{calcText}</Text>
+        </View>
       </View>
       <View style={styles.calculation}>
         {/* <TextInput
@@ -189,11 +194,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  resultContainer: {
+    flex: 2,
+    flexDirection: "row"
+  },
+  history: {
+    flex: 3,
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "flex-end",
+  },
+  historyText: {
+    fontSize: 30,
+    color: "white"
+  },
   result: {
     flex: 2,
     backgroundColor: "grey",
     justifyContent: "center",
     alignItems: "flex-end",
+    border: "2px solid black"
   },
   resultText: {
     fontSize: 30,
