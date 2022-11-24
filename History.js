@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 
 const History = (props) => {
-    console.log('search: ', props.history)
+    console.log('his: ', props.history)
+    console.log('search: ', props.search)
     return (
-        <View style={{ paddingTop: 5, paddingBottom: 5 }}>
+        <View style={styles.history}><View style={styles.historyTitle}>Suggestions</View>
             {props && props.history && props.history.map((v, i) => {
-                if (v.includes(props.search))
+                if (props.search && v.includes(props.search))
                     return (
                         < Text
                             key={i}
-                            style={{ fontSize: 16 }}
+                            style={styles.historyText}
                         >
                             {v}
                         </Text>
@@ -20,4 +21,22 @@ const History = (props) => {
         </View >
     )
 }
+const styles = StyleSheet.create({
+    historyTitle: {
+        alignItems: "center",
+        fontSize: 30,
+        // position: "absolute",
+        // left: "50%",
+        // transform: "translate(-50%, 0)",
+    },
+    history: {
+        flex: 2,
+        backgroundColor: "white",
+        paddingLeft: 20
+    },
+    historyText: {
+        fontSize: 18,
+        color: "black"
+    }
+})
 export default History;

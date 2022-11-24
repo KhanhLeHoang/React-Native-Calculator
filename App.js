@@ -1,20 +1,25 @@
 import React, { useState } from "react";
-import { StyleSheet,TextInput, View, Text, TouchableOpacity, Button } from "react-native";
+import { StyleSheet, TextInput, View, Text, TouchableOpacity, Button } from "react-native";
+import History from './History';
 
 export default function App() {
   const [resultText, setResultText] = useState("");
   const [calcText, setCalcText] = useState("");
+  const [his, setHis] = useState([]);
   const calc = (text) => {
     try {
       const res = eval(text);
+      if (!his.includes(text) && text.includes("+") || text.includes("-") || text.includes("*") || text.includes("/"))
+        setHis([...his, text+' = '+res])
       return res;
     }
     catch (e) {
       return "Syntax Error";
     }
   }
-  const Replace = (text) =>{
-    while(text.includes("++")||text.includes("+-")||text.includes("-+")||text.includes("--"))
+
+  const Replace = (text) => {
+    while (text.includes("++") || text.includes("+-") || text.includes("-+") || text.includes("--"))
       text = text.replace("++", "+ +").replace("+-", "+ -").replace("-+", "- +").replace("--", "- -");
     return text;
   }
@@ -30,7 +35,6 @@ export default function App() {
   };
 
   const onOperationClick = (operation) => {
-    let operations = ["DEL", "+", "-", "*", "/"];
 
     if (operation == "DEL") {
       return setResultText(
@@ -44,11 +48,18 @@ export default function App() {
     }
     setResultText(resultText + operation);
   };
+  console.log(resultText)
 
   return (
     <View style={styles.container}>
-      <View style={styles.result}>
-        <Text style={styles.resultText}>{calcText}</Text>
+      <View style={styles.resultContainer}>
+        <View style={styles.result}>
+          <Text style={styles.resultText}>{calcText}</Text>
+        </View>
+        <History
+          history={his}
+          search={resultText}
+        />
       </View>
       <View style={styles.calculation}>
         {/* <TextInput
@@ -180,6 +191,7 @@ export default function App() {
             <Text style={styles.operationButton}>*</Text>
           </TouchableOpacity>
         </View>
+
       </View>
     </View>
   );
@@ -189,14 +201,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  resultContainer: {
+    flex: 2,
+    flexDirection: "row"
+  },
   result: {
     flex: 2,
     backgroundColor: "grey",
     justifyContent: "center",
     alignItems: "flex-end",
+    border: "2px solid black",
+    padding: 30
   },
   resultText: {
-    fontSize: 30,
+    fontSize: 60,
     color: "white",
   },
   calculationText: {
